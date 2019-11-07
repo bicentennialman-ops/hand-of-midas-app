@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'localizations.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,7 +10,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      localizationsDelegates: [
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [Locale("en"), Locale("vi")],
+      title: "AppLocalizations.of(context).hello",
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -20,7 +29,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: "AppLocalizations.of(context).title"),
     );
   }
 }
@@ -69,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(AppLocalizations.of(context).hello("Khang")),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -92,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              AppLocalizations.of(context).monthYear(DateTime.now()),
             ),
             Text(
               '$_counter',
