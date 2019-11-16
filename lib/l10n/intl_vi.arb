@@ -6,11 +6,18 @@
     "type": "text",
     "placeholders": {}
   },
-  "hello": "Xin chào $name",
+  "hello": "Xin chào {name}",
   "@hello": {
     "type": "text",
     "placeholders": {
       "name": {}
+    }
+  },
+  "birthday": "Sinh nhật: {date}",
+  "@birthday": {
+    "type": "text",
+    "placeholders": {
+      "date": {}
     }
   }
 }

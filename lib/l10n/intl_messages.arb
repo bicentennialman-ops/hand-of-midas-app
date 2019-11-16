@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-11-07T07:40:36.479294",
+  "@@last_modified": "2019-11-13T17:29:21.209062",
   "title": "Hello world App",
   "@title": {
     "description": "The application title",
@@ -11,6 +11,28 @@
     "type": "text",
     "placeholders": {
       "name": {}
+    }
+  },
+  "Username": "Username",
+  "@Username": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Password": "Password",
+  "@Password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "walletNameDefault": "Cash",
+  "@walletNameDefault": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "countExchanges": "{count} exchanges",
+  "@countExchanges": {
+    "type": "text",
+    "placeholders": {
+      "count": {}
     }
   }
 }

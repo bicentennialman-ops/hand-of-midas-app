@@ -1,0 +1,16 @@
+[
+    {
+        "sid": "5dc14f7c5fb4cb0c53099cbf",
+        "name": "Việt Nam đồng",
+        "code": "VND",
+        "character": "₫",
+        "avatar": "vietnam.svg"
+    },
+    {
+        "sid": "5dc7f08d214b4e638433296f",
+        "name": "Dola",
+        "code": "USD",
+        "avatar": "united-states.svg",
+        "character": "$"
+    }
+]
