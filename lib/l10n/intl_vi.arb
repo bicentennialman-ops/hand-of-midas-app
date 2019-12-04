@@ -1,23 +1,113 @@
 {
-  "@@last_modified": "2019-11-07T07:07:30.839797",
-  "title": "Đây là title",
+  "@@last_modified": "2019-11-16T16:01:31.161120",
+  "title": "Hello world App",
   "@title": {
     "description": "The application title",
     "type": "text",
     "placeholders": {}
   },
-  "hello": "Xin chào {name}",
+  "hello": "Hello {name}",
   "@hello": {
     "type": "text",
     "placeholders": {
       "name": {}
     }
   },
-  "birthday": "Sinh nhật: {date}",
-  "@birthday": {
+  "username": "Tên đăng nhập",
+  "@username": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "Mật khẩu",
+  "@password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "today": "To day",
+  "@today": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yesterday": "Yesteray",
+  "@yesterday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thisWeek": "This week",
+  "@thisWeek": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastWeek": "Last week",
+  "@lastWeek": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thisMonth": "This month",
+  "@thisMonth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastMonth": "Last month",
+  "@lastMonth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thisYear": "This year",
+  "@thisYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastYear": "Last year",
+  "@lastYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatDateMonthYear": "dd/MM/yyyy",
+  "@formatDateMonthYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatMonthYear": "MMMM, yyyy",
+  "@formatMonthYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "future": "Future",
+  "@future": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exchangesTitle": "Exchanges",
+  "@exchangesTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "alertUnauthorized": "Username/password is incorrect!",
+  "@alertUnauthorized": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Login",
+  "@login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "walletNameDefault": "Cash",
+  "@walletNameDefault": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "countExchanges": "{count} exchanges",
+  "@countExchanges": {
     "type": "text",
     "placeholders": {
-      "date": {}
+      "count": {}
     }
   }
 }

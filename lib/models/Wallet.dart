@@ -7,20 +7,25 @@ class Wallet {
   int id;
   String sid;
   int type;
+  String name;
   CurrencyUnit currencyUnit;
   String avatar;
   User userCreate;
   List<WalletUser> walletUsers;
-  num destionation;
+  String destionation;
   String note;
   DateTime createDate;
   DateTime updateDate;
   DateTime startDate;
   DateTime endDate;
   String action;
+  num firstMoney;
+  num money;
+
   Wallet(
       this.id,
       this.sid,
+      this.name,
       this.type,
       this.currencyUnit,
       this.avatar,
@@ -32,14 +37,14 @@ class Wallet {
       this.updateDate,
       this.startDate,
       this.endDate,
+      this.firstMoney,
       this.action);
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
       "sid": sid,
       "type": type,
-      "currentUnitId": currencyUnit.id,
+      "currencyUnitId": currencyUnit.id,
       "avatar": avatar,
       "userCreateId": userCreate.id,
       "createDate": createDate.millisecondsSinceEpoch,
@@ -48,7 +53,9 @@ class Wallet {
       "startDate": startDate != null ? startDate.millisecondsSinceEpoch : -1,
       "endDate": endDate != null ? endDate.millisecondsSinceEpoch : -1,
       "note": note,
-      "destionation": destionation
+      "destionation": destionation,
+      "name": name,
+      "firstMoney": firstMoney
     };
   }
 
@@ -69,5 +76,7 @@ class Wallet {
     note = map["note"];
     destionation = map["destionation"];
     currencyUnit = CurrencyUnit.fromMap(map["currencyUnit"]);
+    name = map["name"];
+    firstMoney = map["firstMoney"];
   }
 }

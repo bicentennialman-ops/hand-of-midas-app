@@ -37,13 +37,16 @@ class DatabaseHelper {
         ''');
 
     batch.execute('''
-          CREATE TABLE ${Strings.categoryTable}(id INTEGER PRIMARY KEY AUTOINCREMENT,sid TEXT,code TEXT,name TEXT,type INTEGER,avatar TEXT NOT NULL,avatarUrl TEXT NOT NULL)
+          CREATE TABLE ${Strings.categoryTable}(id INTEGER PRIMARY KEY AUTOINCREMENT,parentId INTEGER,sid TEXT,code TEXT,name TEXT,type INTEGER NOT NULL,bias INTEGER NOT NULL, avatar TEXT NOT NULL,avatarUrl TEXT NOT NULL,
+            FOREIGN KEY(parentId) REFERENCES ${Strings.categoryTable}(id));
      ''');
 
     batch.execute('''
          CREATE TABLE ${Strings.exchangeTable}(id INTEGER PRIMARY KEY AUTOINCREMENT,sid TEXT,money REAL,note TEXT,
                   userCreateId INTEGER,dateCreate INTEGER NOT NULL,walletId INTEGER NOT NULL,
                   date INTEGER NOT NULL,withPersonId INTEGER,positionId INTEGER,action TEXT,
+                  categoryId INTEGER NOT NULL,
+          FOREIGN KEY(categoryId) REFERENCES ${Strings.categoryTable}(id),
           FOREIGN KEY(withPersonId) REFERENCES ${Strings.personTable}(id), FOREIGN KEY(positionId) REFERENCES ${Strings.positionTable}(id),
           FOREIGN KEY(userCreateId) REFERENCES ${Strings.userTable}(id), FOREIGN KEY(walletId) REFERENCES ${Strings.walletTable}(id));
      ''');
@@ -66,12 +69,17 @@ class DatabaseHelper {
      ''');
 
     batch.execute('''
-        CREATE TABLE ${Strings.walletTable}(id INTEGER PRIMARY KEY AUTOINCREMENT, sid TEXT, type INTEGER NOT NULL, currencyUnitId INTEGER, avatar TEXT NOT NULL,userCreateId INTEGER NOT NULL,destionation REAL,note TEXT,createDate INTEGER NOT NULL,updateDate INTEGER NOT NULL,startDate INTEGER, endDate INTEGER,action TEXT, FOREIGN KEY(userCreateId) REFERENCES ${Strings.userTable}(id));
+        CREATE TABLE ${Strings.walletTable}(id INTEGER PRIMARY KEY AUTOINCREMENT, sid TEXT, firstMoney REAL DEFAULT 0,name TEXT NOT NULL, type INTEGER NOT NULL, currencyUnitId INTEGER, avatar TEXT NOT NULL,userCreateId INTEGER NOT NULL,destionation REAL,note TEXT,createDate INTEGER NOT NULL,updateDate INTEGER NOT NULL,startDate INTEGER, endDate INTEGER,action TEXT, FOREIGN KEY(userCreateId) REFERENCES ${Strings.userTable}(id));
      ''');
 
     batch.execute('''
         CREATE TABLE ${Strings.walletUserTable}(id INTEGER PRIMARY KEY AUTOINCREMENT,userId INTEGER NOT NULL,role TEXT NOT NULL, FOREIGN KEY(userId) REFERENCES ${Strings.userTable}(id));
      ''');
+
+    batch.execute('''
+        CREATE TABLE ${Strings.iconWalletTable}(icon STRING NOT NULL,type INTEGER NOT NULL);
+     ''');
+
     print("Create table success");
 
     print("Insert data");
@@ -80,6 +88,19 @@ class DatabaseHelper {
           VALUES ("5dc14f7c5fb4cb0c53099cbf","Việt Nam đồng","VND","₫","vietnam.svg","#,###",".",","),
                   ("5dc7f08d214b4e638433296f","Dola","USD","\$","united-states.svg","#,##0.00",",",".");
     ''');
-    await batch.commit();
+
+    batch.execute('''
+      INSERT INTO ${Strings.iconWalletTable}(icon,type)
+        VALUES ("saving.svg",0),
+               ("wallet.svg",0);
+    ''');
+    batch.execute('''
+      INSERT INTO ${Strings.categoryTable}(id,sid,code,name,type,bias,avatar,avatarUrl,parentId)
+        VALUES (1,"5dc106dfd8c4f7fdc52cad31","debt",NULL,0,-1,"debt.svg","debt.svg",NULL),
+              (2,"5dc107d8d8c4f7fdc52cad32","bills-utilities",NULL,-1,-1,"bills-utilities.svg","bills-utilities.svg",NULL),
+              (3,"5dc10854d8c4f7fdc52cad33","water",NULL,-1,-1,"water.svg","water.svg",2),
+              (4,"5dd0cd111c0e6d95d0f6148e","salary",NULL,1,1,"salary.svg","salary.svg",NULL);
+    ''');
+    batch.commit();
   }
 }

@@ -6,10 +6,8 @@ class User {
   String phoneNumber;
   String name;
   String avatar;
-  String avatarUrl;
 
-  User(this.email, this.username, this.phoneNumber, this.name, this.avatar,
-      this.avatarUrl);
+  User(this.email, this.username, this.phoneNumber, this.name, this.avatar);
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,17 +17,16 @@ class User {
       "phoneNumber": phoneNumber,
       "name": name,
       "avatar": avatar,
-      "avatar": avatarUrl
     };
   }
 
   User.fromMap(Map<String, dynamic> map) {
+    id = map["id"];
     sid = map["sid"];
     email = map["email"];
     username = map["username"];
     phoneNumber = map["phoneNumber"];
     name = map["name"];
     avatar = map["avatar"];
-    avatarUrl = map["avatarUrl"];
   }
 }

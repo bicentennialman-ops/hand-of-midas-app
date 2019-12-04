@@ -16,6 +16,18 @@ Future<http.Response> login(String login, String password) {
   );
 }
 
+Future<String> renewToken(String token) {
+  return http.get('${Strings.URL_API}/renewToken', headers: {
+    "Content-Type": "application/json",
+    "Authorization": token
+  }).then((res) {
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body)["token"];
+    } else
+      return "";
+  });
+}
+
 Future<http.Response> getUserInfor() {
   return storage.read(key: "token").then((token) {
     return http.get('${Strings.URL_API}/getUserInfor',

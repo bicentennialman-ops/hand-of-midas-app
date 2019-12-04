@@ -18,4 +18,11 @@ class UserProvider {
         .rawQuery('SELECT * FROM ${Strings.userTable} WHERE id=?', [id]);
     return User.fromMap(maps[0]);
   }
+
+  Future<User> getUserBySid(String sid) async {
+    final Database db = await database;
+    List<Map> maps = await db
+        .rawQuery('SELECT * FROM ${Strings.userTable} WHERE sid=?', [sid]);
+    return User.fromMap(maps[0]);
+  }
 }

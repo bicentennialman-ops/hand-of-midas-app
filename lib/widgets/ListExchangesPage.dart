@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:handofmidas/constants/app_themes.dart';
+import 'package:handofmidas/database/category.dart';
+import 'package:handofmidas/database/exchange.dart';
+import 'package:handofmidas/localizations.dart';
 import 'package:handofmidas/models/Category.dart';
 import 'package:handofmidas/models/Exchange.dart';
 import 'package:handofmidas/models/GroupExchanges.dart';
-
-import 'GroupExchanges.dart';
+import 'package:handofmidas/models/PageIndex.dart';
 
 class ListExchangesPageWidget extends StatefulWidget {
-  ListExchangesPageWidget(this.indexPage);
-  final int indexPage;
+  ListExchangesPageWidget(this.rangeTime, this.walletId);
+
+  final RangeTime rangeTime;
+  final int walletId;
   @override
   _ListExchangesPageState createState() => _ListExchangesPageState();
 }
@@ -20,19 +24,25 @@ class _ListExchangesPageState extends State<ListExchangesPageWidget>
   @override
   void initState() {
     super.initState();
-    groups = List.from([
-      GroupExchanges(
-          Category('010292djdjddjdjdjdjd', 'debt', null, 0, -1, 'debt.svg',
-              null, null),
-          List.from([
-            Exchange(null, 'idServer', -1000000, 'Ha noi hom nay', null,
-                DateTime.now(), DateTime.now(), null, null, null),
-            Exchange(null, 'idServer', -1230000, 'Ha noi hom nay', null,
-                DateTime.now(), DateTime.now(), null, null, null),
-            Exchange(null, 'idServer', -500000, 'Ha noi hom nay', null,
-                DateTime.now(), DateTime.now(), null, null, null)
-          ]))
-    ]);
+    groups = [];
+    ExchangeProvider()
+        .getExchanges(widget.walletId, widget.rangeTime)
+        .then((exchanges) {
+      exchanges.forEach((exchange) async {
+        var index = groups.indexWhere((groupExchange) {
+          if (groupExchange.category.id == exchange.categoryId)
+            return true;
+          else
+            return false;
+        });
+        if (index >= 0)
+          groups[index].exchanges.add(exchange);
+        else
+          groups.add(GroupExchanges(
+              await CategoryProvider().getCategory(exchange.categoryId),
+              [exchange]));
+      });
+    });
   }
 
   @override
@@ -51,10 +61,10 @@ class _ListExchangesPageState extends State<ListExchangesPageWidget>
             itemBuilder: (context, index) {
               return Container(
                   margin: Layout.mb2,
-                  child: GroupExchangesWidget(groups[index]));
+                  child: Text(AppLocalizations.of(context)
+                      .rangeDate(widget.rangeTime.from, widget.rangeTime.to)));
             },
           )),
     ));
-    ;
   }
 }

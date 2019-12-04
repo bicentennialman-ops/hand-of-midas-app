@@ -8,6 +8,8 @@ AppState reducer(AppState prevState, dynamic action) {
   else if (action is Login) {
     newAppState.isLogined = true;
     newAppState.token = action.token;
+  } else if (action is SelectWallet) {
+    newAppState.wallet = action.wallet;
   }
   return newAppState;
 }

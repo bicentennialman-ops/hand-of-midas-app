@@ -19,11 +19,32 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static m0(name) => "Hello ${name}";
+  static m0(count) => "${count} exchanges";
+
+  static m1(name) => "Hello ${name}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "hello" : m0,
-    "title" : MessageLookupByLibrary.simpleMessage("Hello world App")
+    "alertUnauthorized" : MessageLookupByLibrary.simpleMessage("Username/password is incorrect!"),
+    "countExchanges" : m0,
+    "error" : MessageLookupByLibrary.simpleMessage("Error"),
+    "exchangesTitle" : MessageLookupByLibrary.simpleMessage("Exchanges"),
+    "formatDateMonthYear" : MessageLookupByLibrary.simpleMessage("dd/MM/yyyy"),
+    "formatMonthYear" : MessageLookupByLibrary.simpleMessage("MMMM, yyyy"),
+    "future" : MessageLookupByLibrary.simpleMessage("Future"),
+    "hello" : m1,
+    "lastMonth" : MessageLookupByLibrary.simpleMessage("Last month"),
+    "lastWeek" : MessageLookupByLibrary.simpleMessage("Last week"),
+    "lastYear" : MessageLookupByLibrary.simpleMessage("Last year"),
+    "login" : MessageLookupByLibrary.simpleMessage("Login"),
+    "password" : MessageLookupByLibrary.simpleMessage("Password"),
+    "thisMonth" : MessageLookupByLibrary.simpleMessage("This month"),
+    "thisWeek" : MessageLookupByLibrary.simpleMessage("This week"),
+    "thisYear" : MessageLookupByLibrary.simpleMessage("This year"),
+    "title" : MessageLookupByLibrary.simpleMessage("Hello world App"),
+    "today" : MessageLookupByLibrary.simpleMessage("To day"),
+    "username" : MessageLookupByLibrary.simpleMessage("Username"),
+    "walletNameDefault" : MessageLookupByLibrary.simpleMessage("Cash"),
+    "yesterday" : MessageLookupByLibrary.simpleMessage("Yesteray")
   };
 }

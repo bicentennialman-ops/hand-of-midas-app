@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-11-13T17:29:21.209062",
+  "@@last_modified": "2019-11-17T23:28:33.688566",
   "title": "Hello world App",
   "@title": {
     "description": "The application title",
@@ -13,13 +13,133 @@
       "name": {}
     }
   },
-  "Username": "Username",
-  "@Username": {
+  "username": "Username",
+  "@username": {
     "type": "text",
     "placeholders": {}
   },
-  "Password": "Password",
-  "@Password": {
+  "password": "Password",
+  "@password": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "today": "To day",
+  "@today": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "yesterday": "Yesteray",
+  "@yesterday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thisWeek": "This week",
+  "@thisWeek": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastWeek": "Last week",
+  "@lastWeek": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thisMonth": "This month",
+  "@thisMonth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastMonth": "Last month",
+  "@lastMonth": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thisYear": "This year",
+  "@thisYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastYear": "Last year",
+  "@lastYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatDateMonthYear": "dd/MM/yyyy",
+  "@formatDateMonthYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatMonthYear": "MMMM, yyyy",
+  "@formatMonthYear": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "future": "Future",
+  "@future": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exchangesTitle": "Exchanges",
+  "@exchangesTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addWalletTitle": "Add wallet",
+  "@addWalletTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "Save",
+  "@save": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "walletName": "Wallet name",
+  "@walletName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "currencyUnit": "Currency unit",
+  "@currencyUnit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "firstMoney": "First money",
+  "@firstMoney": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "onAlert": "On alert",
+  "@onAlert": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "onAlertDescription": "On alert when has new exchanges",
+  "@onAlertDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "doNotSumToTotal": "Don't sum to total",
+  "@doNotSumToTotal": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectIcon": "Select icon",
+  "@selectIcon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "alertUnauthorized": "Username/password is incorrect!",
+  "@alertUnauthorized": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Login",
+  "@login": {
     "type": "text",
     "placeholders": {}
   },

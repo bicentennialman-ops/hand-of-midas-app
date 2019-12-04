@@ -33,6 +33,7 @@ dependencies:
   path: ^1.6.4
   redux: ^3.0.0
   flutter_redux: ^0.5.4
+  flutter_datetime_picker: ^1.2.8
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +54,7 @@ flutter:
   assets:
         - assets/category/avatars/
         - assets/currency-unit/
+        - assets/currency-unit/avatars/
         - assets/wallet/avatars/
         - assets/icons/
         - assets/

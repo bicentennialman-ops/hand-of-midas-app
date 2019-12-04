@@ -1,4 +1,5 @@
 import 'package:handofmidas/models/AppState.dart';
+import 'package:handofmidas/models/Wallet.dart';
 
 class InitApp {
   final AppState appState;
@@ -8,4 +9,9 @@ class InitApp {
 class Login {
   final String token;
   Login(this.token);
+}
+
+class SelectWallet {
+  final Wallet wallet;
+  SelectWallet(this.wallet);
 }

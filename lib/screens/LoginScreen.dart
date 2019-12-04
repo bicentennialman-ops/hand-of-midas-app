@@ -6,8 +6,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:handofmidas/constants/app_themes.dart';
 import 'package:handofmidas/constants/strings.dart';
+import 'package:handofmidas/database/user.dart';
 import 'package:handofmidas/localizations.dart';
 import 'package:handofmidas/models/AppState.dart';
+import 'package:handofmidas/models/User.dart';
 import 'package:handofmidas/redux/actions.dart';
 import 'package:handofmidas/screens/ListExchanges.dart';
 import 'package:handofmidas/services/user.dart' as userService;
@@ -21,16 +23,27 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen> {
   String _username;
   String _password;
 
-  void login(context) {
+  void login(BuildContext context, AppState state) {
     userService.login(_username, _password).then((res) {
       if (res.statusCode == 200) {
-        StoreProvider.of<AppState>(context)
-            .dispatch(Login(jsonDecode(res.body)["token"]));
+        String token = jsonDecode(res.body)["token"];
+        StoreProvider.of<AppState>(context).dispatch(Login(token));
+        userService.storage.write(key: "token", value: token);
+        Map<String, dynamic> setting = new Map();
+        if (state.firstLoad) {
+          setting["firstLoad"] = false;
+        }
+        userService.storage.write(key: "setting", value: jsonEncode(setting));
+        userService.getUserInfor().then((res) {
+          if (res.statusCode == 200) {
+            User user = User.fromMap(jsonDecode(res.body));
+            UserProvider().insertUser(user);
+          }
+        });
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => ListExchangesScreen()));
       } else {
@@ -109,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen>
                       LoginInputForm(
                           '${Strings.ICON}/user.svg',
                           TextInputType.emailAddress,
-                          AppLocalizations.of(context).userName,
+                          AppLocalizations.of(context).username,
                           false, (value) {
                         setState(() {
                           _username = value;
@@ -130,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen>
                           shape: RoundedRectangleBorder(
                               borderRadius: buttonBorderRadius,
                               side: BorderSide(color: AppColors.green[700])),
-                          onPressed: () => login(context),
+                          onPressed: () => login(context, state),
                           color: AppColors.green[700],
                           textColor: Colors.white,
                           child: Container(

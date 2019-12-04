@@ -9,8 +9,8 @@ class CurrencyUnit {
   String decimalSeparator;
   String groupingSeparator;
 
-  CurrencyUnit(this.sid, this.name, this.code, this.character, this.format,
-      this.decimalSeparator, this.groupingSeparator);
+  CurrencyUnit(this.id, this.sid, this.name, this.code, this.character,
+      this.format, this.decimalSeparator, this.groupingSeparator);
 
   CurrencyUnit.fromMap(Map<String, dynamic> map) {
     id = map["id"];
