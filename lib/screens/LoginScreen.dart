@@ -11,6 +11,7 @@ import 'package:handofmidas/localizations.dart';
 import 'package:handofmidas/models/AppState.dart';
 import 'package:handofmidas/models/User.dart';
 import 'package:handofmidas/redux/actions.dart';
+import 'package:handofmidas/screens/AddWallet.dart';
 import 'package:handofmidas/screens/ListExchanges.dart';
 import 'package:handofmidas/services/user.dart' as userService;
 
@@ -44,8 +45,12 @@ class _LoginScreenState extends State<LoginScreen> {
             UserProvider().insertUser(user);
           }
         });
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ListExchangesScreen()));
+        if (state.wallet == null)
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddWalletScreen()));
+        else
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ListExchangesScreen()));
       } else {
         showAlertDialog(context);
       }

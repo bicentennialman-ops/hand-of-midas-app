@@ -96,9 +96,9 @@ class DatabaseHelper {
     ''');
     batch.execute('''
       INSERT INTO ${Strings.categoryTable}(id,sid,code,name,type,bias,avatar,avatarUrl,parentId)
-        VALUES (1,"5dc106dfd8c4f7fdc52cad31","debt",NULL,0,-1,"debt.svg","debt.svg",NULL),
-              (2,"5dc107d8d8c4f7fdc52cad32","bills-utilities",NULL,-1,-1,"bills-utilities.svg","bills-utilities.svg",NULL),
-              (3,"5dc10854d8c4f7fdc52cad33","water",NULL,-1,-1,"water.svg","water.svg",2),
+        VALUES (1,"5dc106dfd8c4f7fdc52cad31","debt",NULL,-1,-1,"debt.svg","debt.svg",NULL),
+              (2,"5dc107d8d8c4f7fdc52cad32","bills-utilities",NULL,0,-1,"bills-utilities.svg","bills-utilities.svg",NULL),
+              (3,"5dc10854d8c4f7fdc52cad33","water",NULL,0,-1,"water.svg","water.svg",2),
               (4,"5dd0cd111c0e6d95d0f6148e","salary",NULL,1,1,"salary.svg","salary.svg",NULL);
     ''');
     batch.commit();

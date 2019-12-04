@@ -31,12 +31,14 @@ class AppLocalizations {
     'vi': {
       'debt': 'Vay',
       'water': 'Nước',
-      'bill-utilities': 'Hóa đơn & Tiện ích',
+      'bills-utilities': 'Hóa đơn & Tiện ích',
+      'salary': "Lương"
     },
     'en': {
       'debt': 'Debt',
       'water': 'Water',
-      'bill-utilities': 'Bills & Utilities'
+      'bills-utilities': 'Bills & Utilities',
+      'salary': 'Salary'
     },
   };
 
@@ -93,7 +95,7 @@ class AppLocalizations {
       Intl.message("Username", name: "username", locale: localeName);
   String get password =>
       Intl.message("Password", name: "password", locale: localeName);
-  String get today => Intl.message("To day", name: "today", locale: localeName);
+  String get today => Intl.message("Today", name: "today", locale: localeName);
   String get yesterday =>
       Intl.message("Yesteray", name: "yesterday", locale: localeName);
   String get thisWeek =>
@@ -156,7 +158,11 @@ class AppLocalizations {
       Intl.message("Username/password is incorrect!",
           name: "alertUnauthorized");
   String get login => Intl.message("Login", name: "login");
-  categoryName(String code) => _categoryName[locale.languageCode][code];
+
+  String categoryName(String code) {
+    return _categoryName[locale.languageCode][code];
+  }
+
   walletNameDefault() => Intl.message('Cash', name: 'walletNameDefault');
   countExchanges(int count) =>
       Intl.message('$count exchanges', args: [count], name: 'countExchanges');
@@ -165,6 +171,18 @@ class AppLocalizations {
     final currentUnit = _currencyUnit[code];
     final formatMoney = new NumberFormat(currentUnit['format']);
     return '${formatMoney.format(money).replaceAll('.', currentUnit['groupingSeparator']).replaceAll(',', currentUnit['decimalSeparator'])} ${currentUnit['character']}';
+  }
+
+  String onlyNumberMoney(double money, String code) {
+    final currentUnit = _currencyUnit[code];
+    final formatMoney = new NumberFormat(currentUnit['format']);
+    return '${formatMoney.format(money).replaceAll('.', currentUnit['groupingSeparator']).replaceAll(',', currentUnit['decimalSeparator'])}';
+  }
+
+  double parseMoney(String money, String code) {
+    final currentUnit = _currencyUnit[code];
+    final formatMoney = new NumberFormat(currentUnit['format']);
+    return formatMoney.parse(money);
   }
 }
 

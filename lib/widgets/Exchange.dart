@@ -35,7 +35,7 @@ class ExchangeWidget extends StatelessWidget {
                         .copyWith(color: Colors.black),
                   ),
                   Text(
-                    exchange.note,
+                    exchange.note == null ? "" : exchange.note,
                     style: Theme.of(context).textTheme.caption,
                   )
                 ],
@@ -43,8 +43,9 @@ class ExchangeWidget extends StatelessWidget {
             ],
           ),
           Text(
-            AppLocalizations.of(context).money(exchange.money.abs(), "VND"),
-            style: Theme.of(context).textTheme.display3.copyWith(
+            AppLocalizations.of(context)
+                .money(exchange.money.abs(), exchange.currencyUnitCode),
+            style: Theme.of(context).textTheme.display4.copyWith(
                 color: exchange.money < 0
                     ? negativeMoneyColor
                     : positiveMoneyColor),

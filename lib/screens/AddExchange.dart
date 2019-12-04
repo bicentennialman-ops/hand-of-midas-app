@@ -1,18 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:handofmidas/constants/app_themes.dart';
 import 'package:handofmidas/constants/strings.dart';
+import 'package:handofmidas/database/exchange.dart';
 import 'package:handofmidas/models/AppState.dart';
 import 'package:handofmidas/models/Category.dart';
 import 'package:handofmidas/models/Person.dart';
 import 'package:handofmidas/models/Position.dart';
 import 'package:handofmidas/models/Wallet.dart';
 import 'package:handofmidas/redux/actions.dart';
+import 'package:handofmidas/screens/ListExchanges.dart';
 import 'package:handofmidas/screens/SelectCategory.dart';
 import 'package:handofmidas/screens/SelectWallet.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:handofmidas/services/exchange.dart';
+import 'package:handofmidas/utils/CurrencyInputFormatter.dart';
 
 import '../localizations.dart';
 
@@ -26,9 +33,32 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
   Category _category;
   String _note;
   DateTime _date = DateTime.now();
-  Wallet _wallet;
+  DateTime _dateCreate = DateTime.now();
   Person _withPerson;
   Position _position;
+
+  TextEditingController _moneyController = new TextEditingController(text: "0");
+
+  _save(Wallet wallet) {
+    addExchange(wallet, _money, _note, _date, _dateCreate, _category)
+        .then((res) {
+      if (res.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(res.body);
+        Map<String, dynamic> exchange = new Map();
+        exchange["sid"] = data["_id"];
+        exchange["walletId"] = wallet.id;
+        exchange["note"] = data["note"];
+        exchange["categoryId"] = _category.id;
+        exchange["money"] = _money * _category.bias;
+        exchange["date"] = _date.millisecondsSinceEpoch;
+        exchange["dateCreate"] = _dateCreate.millisecondsSinceEpoch;
+        ExchangeProvider().insertExchange(exchange).then((e) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ListExchangesScreen()));
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +85,9 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
                             .title
                             .copyWith(color: Colors.black)),
                     FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _save(state.wallet);
+                      },
                       child: Text(AppLocalizations.of(context).save,
                           style: Theme.of(context)
                               .textTheme
@@ -84,9 +116,17 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
                           Row(children: <Widget>[
                             Flexible(
                               child: TextField(
+                                controller: _moneyController,
+                                inputFormatters: [
+                                  WhitelistingTextInputFormatter.digitsOnly,
+                                  new CurrencyInputFormatter(
+                                      context, state.wallet.currencyUnit.code)
+                                ],
                                 onChanged: (value) {
                                   this.setState(() {
-                                    _money = double.parse(value);
+                                    _money = AppLocalizations.of(context)
+                                        .parseMoney(value,
+                                            state.wallet.currencyUnit.code);
                                   });
                                 },
                                 maxLines: 1,
@@ -183,7 +223,52 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
                                   ),
                                 ])
                               : Row(
-                                  children: <Widget>[],
+                                  children: <Widget>[
+                                    Container(
+                                      height: iconSize,
+                                      width: iconSize,
+                                      margin: Layout.mr2,
+                                      child: SvgPicture.asset(
+                                          "${Strings.AVATAR_CATEGORY}/${_category.avatar}"),
+                                    ),
+                                    Flexible(
+                                      child: Container(
+                                          padding: EdgeInsets.only(
+                                              top: Layout.p2,
+                                              bottom: Layout.p2),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: AppColors.gray[50],
+                                                      width: 1))),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                _category.code != null
+                                                    ? AppLocalizations.of(
+                                                            context)
+                                                        .categoryName(
+                                                            _category.code)
+                                                    : _category.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .body1
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .gray[500]),
+                                              ),
+                                              Container(
+                                                height: iconMiniSize,
+                                                width: iconMiniSize,
+                                                child: SvgPicture.asset(
+                                                    "${Strings.ICON}/arrow-right.svg"),
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                  ],
                                 ),
                         ),
                         Padding(

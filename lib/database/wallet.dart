@@ -35,6 +35,17 @@ class WalletProvider {
     return Wallet.fromMap(walletMap);
   }
 
+  Future<Wallet> getWalletBySid(String sid) async {
+    final Database db = await database;
+    List<Map> maps = await db
+        .rawQuery("SELECT * FROM ${Strings.walletTable} WHERE sid=?", [sid]);
+    Map<String, dynamic> walletMap = Map.from(maps[0]);
+    var currencyUnit =
+        await currencyUnitProvider.getCurrentUnit(walletMap["currencyUnitId"]);
+    walletMap["currencyUnit"] = currencyUnit.toMap();
+    return Wallet.fromMap(walletMap);
+  }
+
   Future<List<Wallet>> getWallets() async {
     final Database db = await database;
     List<Map> maps = await db.rawQuery("SELECT * FROM ${Strings.walletTable};");

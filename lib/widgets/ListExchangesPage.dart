@@ -4,10 +4,10 @@ import 'package:handofmidas/constants/app_themes.dart';
 import 'package:handofmidas/database/category.dart';
 import 'package:handofmidas/database/exchange.dart';
 import 'package:handofmidas/localizations.dart';
-import 'package:handofmidas/models/Category.dart';
-import 'package:handofmidas/models/Exchange.dart';
+
 import 'package:handofmidas/models/GroupExchanges.dart';
 import 'package:handofmidas/models/PageIndex.dart';
+import 'package:handofmidas/widgets/GroupExchanges.dart';
 
 class ListExchangesPageWidget extends StatefulWidget {
   ListExchangesPageWidget(this.rangeTime, this.walletId);
@@ -20,27 +20,32 @@ class ListExchangesPageWidget extends StatefulWidget {
 
 class _ListExchangesPageState extends State<ListExchangesPageWidget>
     with SingleTickerProviderStateMixin {
-  List<GroupExchanges> groups;
+  List<GroupExchanges> _groups = [];
   @override
   void initState() {
     super.initState();
-    groups = [];
+    List<GroupExchanges> groups = [];
     ExchangeProvider()
         .getExchanges(widget.walletId, widget.rangeTime)
-        .then((exchanges) {
-      exchanges.forEach((exchange) async {
-        var index = groups.indexWhere((groupExchange) {
-          if (groupExchange.category.id == exchange.categoryId)
-            return true;
-          else
-            return false;
-        });
-        if (index >= 0)
-          groups[index].exchanges.add(exchange);
-        else
+        .then((exchanges) async {
+      for (var exchange in exchanges) {
+        bool isNew = true;
+        for (var index = 0; index < groups.length; index++) {
+          var groupExchange = groups[index];
+          if (groupExchange.category.id == exchange.categoryId) {
+            groupExchange.exchanges.add(exchange);
+            isNew = false;
+            break;
+          }
+        }
+        if (isNew)
           groups.add(GroupExchanges(
               await CategoryProvider().getCategory(exchange.categoryId),
               [exchange]));
+      }
+      ;
+      this.setState(() {
+        _groups = groups;
       });
     });
   }
@@ -57,12 +62,11 @@ class _ListExchangesPageState extends State<ListExchangesPageWidget>
           padding: Layout.pt2,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
-            itemCount: groups.length,
+            itemCount: _groups.length,
             itemBuilder: (context, index) {
+              var group = _groups[index];
               return Container(
-                  margin: Layout.mb2,
-                  child: Text(AppLocalizations.of(context)
-                      .rangeDate(widget.rangeTime.from, widget.rangeTime.to)));
+                  margin: Layout.mb2, child: GroupExchangesWidget(group));
             },
           )),
     ));

@@ -9,8 +9,8 @@ import 'package:handofmidas/models/Category.dart';
 import '../localizations.dart';
 
 class SelectCategoryScreen extends StatefulWidget {
-  var _selectCateogry;
-  SelectCategoryScreen(this._selectCateogry);
+  final selectCateogry;
+  SelectCategoryScreen(this.selectCateogry);
   @override
   _SelectCategoryScreenState createState() => _SelectCategoryScreenState();
 }
@@ -32,7 +32,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: 3, initialIndex: 0);
+    _tabController = new TabController(vsync: this, length: 3, initialIndex: 1);
   }
 
   @override
@@ -121,19 +121,24 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
           body: TabBarView(
             controller: _tabController,
             children: <Widget>[
-              SingleChildScrollView(
-                child: ListView.builder(
-                  itemCount: _groupCateogries[0].length,
-                  itemBuilder: (context, index) {
-                    var category = _groupCateogries[0][index];
-                    return FlatButton(
+              ListView.builder(
+                itemCount:
+                    _groupCateogries == null ? 0 : _groupCateogries[-1].length,
+                itemBuilder: (cxt, index) {
+                  if (_groupCateogries == null) return null;
+                  var category = _groupCateogries[-1][index];
+                  return Container(
+                    margin: Layout.mt1,
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: FlatButton(
                       padding: EdgeInsets.all(Layout.p2),
-                      onPressed: () => widget._selectCateogry(category),
+                      onPressed: () => widget.selectCateogry(category),
                       child: Row(
                         children: <Widget>[
                           Container(
                             height: iconSize,
                             width: iconSize,
+                            margin: Layout.mr1,
                             child: SvgPicture.asset(
                                 "${Strings.AVATAR_CATEGORY}/${category.avatar}"),
                           ),
@@ -146,12 +151,78 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
                           )
                         ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-              Container(),
-              Container(),
+              ListView.builder(
+                itemCount:
+                    _groupCateogries == null ? 0 : _groupCateogries[0].length,
+                itemBuilder: (cxt, index) {
+                  if (_groupCateogries == null) return null;
+                  var category = _groupCateogries[0][index];
+                  return Container(
+                    margin: Layout.mt1,
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: FlatButton(
+                      padding: EdgeInsets.all(Layout.p2),
+                      onPressed: () => widget.selectCateogry(category),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            height: iconSize,
+                            width: iconSize,
+                            margin: Layout.mr1,
+                            child: SvgPicture.asset(
+                                "${Strings.AVATAR_CATEGORY}/${category.avatar}"),
+                          ),
+                          Text(
+                            category.code != null
+                                ? AppLocalizations.of(context)
+                                    .categoryName(category.code)
+                                : category.name,
+                            style: Theme.of(context).textTheme.body1,
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ListView.builder(
+                itemCount:
+                    _groupCateogries == null ? 0 : _groupCateogries[1].length,
+                itemBuilder: (cxt, index) {
+                  if (_groupCateogries == null) return null;
+                  var category = _groupCateogries[1][index];
+                  return Container(
+                    margin: Layout.mt1,
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: FlatButton(
+                      padding: EdgeInsets.all(Layout.p2),
+                      onPressed: () => widget.selectCateogry(category),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            height: iconSize,
+                            width: iconSize,
+                            margin: Layout.mr1,
+                            child: SvgPicture.asset(
+                                "${Strings.AVATAR_CATEGORY}/${category.avatar}"),
+                          ),
+                          Text(
+                            category.code != null
+                                ? AppLocalizations.of(context)
+                                    .categoryName(category.code)
+                                : category.name,
+                            style: Theme.of(context).textTheme.body1,
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),

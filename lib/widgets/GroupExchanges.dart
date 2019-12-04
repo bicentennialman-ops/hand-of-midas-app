@@ -28,7 +28,8 @@ class GroupExchangesWidget extends StatelessWidget {
                   category,
                   exchanges.length,
                   exchanges.fold(
-                      0, (value, exchange) => value + exchange.money)),
+                      0, (value, exchange) => value + exchange.money),
+                  exchanges[0].currencyUnitCode),
               Divider(),
               _Exchanges(exchanges)
             ],
@@ -41,8 +42,9 @@ class _Cateogry extends StatelessWidget {
   final Category category;
   final int count;
   final double money;
+  final String currencyUnitCode;
 
-  _Cateogry(this.category, this.count, this.money);
+  _Cateogry(this.category, this.count, this.money, this.currencyUnitCode);
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +57,8 @@ class _Cateogry extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: Layout.mr1,
-                  height: avatarSize,
-                  width: avatarSize,
+                  height: iconSize,
+                  width: iconSize,
                   child: ClipRRect(
                       borderRadius: avatarBorderRadius,
                       child: SvgPicture.asset(
@@ -70,18 +72,18 @@ class _Cateogry extends StatelessWidget {
                           ? category.name
                           : AppLocalizations.of(context)
                               .categoryName(category.code),
-                      style: Theme.of(context).textTheme.display3,
+                      style: Theme.of(context).textTheme.body1,
                     ),
                     Text(AppLocalizations.of(context).countExchanges(count),
-                        style: Theme.of(context).textTheme.subhead)
+                        style: Theme.of(context).textTheme.subtitle)
                   ],
                 )
               ],
             )
           ],
         ),
-        Text(AppLocalizations.of(context).money(money.abs(), "VND"),
-            style: Theme.of(context).textTheme.display3)
+        Text(AppLocalizations.of(context).money(money, currencyUnitCode),
+            style: Theme.of(context).textTheme.display4)
       ],
     ));
   }

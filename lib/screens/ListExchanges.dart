@@ -40,7 +40,7 @@ class _ListExchangesState extends State<ListExchangesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _pageIndex = PageIndex(context, 3, DateTime.now(), 0);
+    _pageIndex = PageIndex(context, 1, DateTime.now(), 0);
     return SafeArea(
         child: StoreConnector<AppState, AppState>(
             converter: (store) => store.state,
@@ -68,8 +68,7 @@ class _ListExchangesState extends State<ListExchangesScreen> {
                       controller: _pageController,
                       itemBuilder: (context, indexPage) {
                         return ListExchangesPageWidget(
-                            _pageIndex.rangeTime(_currentPage),
-                            state.wallet.id);
+                            _pageIndex.rangeTime(indexPage), state.wallet.id);
                       },
                       onPageChanged: (pageIndex) =>
                           updateCurrentPage(pageIndex)));

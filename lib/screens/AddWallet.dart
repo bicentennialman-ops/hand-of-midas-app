@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:handofmidas/constants/app_themes.dart';
@@ -19,6 +20,7 @@ import 'package:handofmidas/redux/actions.dart';
 import 'package:handofmidas/screens/SelectCurrencyUnit.dart';
 import 'package:handofmidas/screens/SelectWalletIcons.dart';
 import 'package:handofmidas/services/wallet.dart';
+import 'package:handofmidas/utils/CurrencyInputFormatter.dart';
 import 'package:handofmidas/utils/index.dart';
 
 import 'ListExchanges.dart';
@@ -35,6 +37,8 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
   String _avatar;
   bool _isAlert;
   bool _isIncremental;
+  TextEditingController _firstMoneyController =
+      new TextEditingController(text: "0");
 
   @override
   void initState() {
@@ -71,8 +75,15 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
   }
 
   _save(BuildContext context) {
-    addWallet(_nameWallet, 1, _avatar, _currencyUnit, _isAlert, _isIncremental,
-            double.parse(_firstMoney))
+    addWallet(
+            _nameWallet,
+            1,
+            _avatar,
+            _currencyUnit,
+            _isAlert,
+            _isIncremental,
+            AppLocalizations.of(context)
+                .parseMoney(_firstMoney, _currencyUnit.code))
         .then((res) async {
       if (res.statusCode == 200) {
         Map<String, dynamic> walletMap = jsonDecode(res.body);
@@ -103,7 +114,8 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
             walletMap["endDate"] != null
                 ? DateTime.parse(walletMap["endDate"])
                 : null,
-            double.parse(_firstMoney),
+            AppLocalizations.of(context)
+                .parseMoney(_firstMoney, _currencyUnit.code),
             null));
         if (wallet != null) {
           await setup("walletId", wallet.id);
@@ -338,6 +350,18 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
                                     ),
                                     Flexible(
                                       child: TextField(
+                                        textAlign: TextAlign.right,
+                                        enabled: _currencyUnit != null,
+                                        controller: _firstMoneyController,
+                                        inputFormatters: [
+                                          WhitelistingTextInputFormatter
+                                              .digitsOnly,
+                                          new CurrencyInputFormatter(
+                                              context,
+                                              _currencyUnit != null
+                                                  ? _currencyUnit.code
+                                                  : "USD")
+                                        ],
                                         onChanged: (value) {
                                           this.setState(() {
                                             _firstMoney = value;
@@ -358,12 +382,19 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
                                                             BorderStyle.solid)),
                                             hintText:
                                                 AppLocalizations.of(context)
-                                                    .walletName,
+                                                    .firstMoney,
                                             hintStyle: textStyle.copyWith(
                                                 color: AppColors.gray[50]),
                                             fillColor: Colors.black),
                                       ),
                                     ),
+                                    Text(
+                                      _currencyUnit != null
+                                          ? _currencyUnit.character
+                                          : "",
+                                      style:
+                                          Theme.of(context).textTheme.display4,
+                                    )
                                   ],
                                 )
                               ],

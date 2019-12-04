@@ -4,8 +4,6 @@ import 'package:handofmidas/constants/strings.dart';
 import 'package:handofmidas/database/currency_unit.dart';
 import 'package:handofmidas/database/database_helper.dart';
 import 'package:handofmidas/models/Category.dart';
-import 'package:handofmidas/models/IconWallet.dart';
-import 'package:handofmidas/models/Wallet.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class CategoryProvider {
