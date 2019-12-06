@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:handofmidas/constants/app_themes.dart';
 import 'package:handofmidas/database/wallet.dart';
+import 'package:handofmidas/models/TimeType.dart';
 import 'package:handofmidas/redux/reducers/index.dart';
 import 'package:handofmidas/screens/AddWallet.dart';
 import 'package:handofmidas/screens/ListExchanges.dart';
@@ -19,12 +22,19 @@ void main() async {
   var setting = await getSetting();
   AppState _initialState;
   if (setting == null) {
-    _initialState = AppState(true, false, null, null);
+    TimeType timeType = TimeType(1, DateTime.now(), 10);
+    setup("timeType", timeType.toMap());
+    _initialState = AppState(timeType, true, false, null, null);
   } else {
     String token = await storage.read(key: "token");
     String newToken = await renewToken(token);
+
+    TimeType timeType = TimeType(1, DateTime.now(), 10);
+    setup("timeType", timeType.toMap());
+    //TimeType timeType = TimeType.fromMap(setting["timeType"]);
     if (newToken == "")
       _initialState = AppState(
+          timeType,
           false,
           false,
           "",
@@ -35,6 +45,7 @@ void main() async {
     else {
       await storage.write(key: "token", value: newToken);
       _initialState = AppState(
+          timeType,
           false,
           true,
           newToken,
@@ -74,7 +85,7 @@ class MyApp extends StatelessWidget {
           home: store.state.isLogined
               ? store.state.wallet == null
                   ? AddWalletScreen()
-                  : ListExchangesScreen()
+                  : ListExchangesScreen(store.state.timeType)
               : LoginScreen()),
     );
   }

@@ -14,6 +14,7 @@ import 'package:handofmidas/models/AppState.dart';
 import 'package:handofmidas/models/CurrencyUnit.dart';
 import 'package:handofmidas/database/wallet.dart';
 import 'package:handofmidas/models/IconWallet.dart';
+import 'package:handofmidas/models/TimeType.dart';
 import 'package:handofmidas/models/Wallet.dart';
 import 'package:handofmidas/models/WalletUser.dart';
 import 'package:handofmidas/redux/actions.dart';
@@ -74,7 +75,7 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
     });
   }
 
-  _save(BuildContext context) {
+  _save(BuildContext context, TimeType timeType) {
     addWallet(
             _nameWallet,
             1,
@@ -120,8 +121,10 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
         if (wallet != null) {
           await setup("walletId", wallet.id);
           StoreProvider.of<AppState>(context).dispatch(SelectWallet(wallet));
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ListExchangesScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ListExchangesScreen(timeType)));
         }
       } else
         print(res.body);
@@ -164,7 +167,7 @@ class _AddWalletScreenState extends State<AddWalletScreen> {
                             .title
                             .copyWith(color: Colors.black)),
                     FlatButton(
-                      onPressed: () => _save(context),
+                      onPressed: () => _save(context, state.timeType),
                       child: Text(AppLocalizations.of(context).save,
                           style: Theme.of(context)
                               .textTheme

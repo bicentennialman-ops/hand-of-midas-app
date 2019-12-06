@@ -12,6 +12,7 @@ import 'package:handofmidas/models/AppState.dart';
 import 'package:handofmidas/models/Category.dart';
 import 'package:handofmidas/models/Person.dart';
 import 'package:handofmidas/models/Position.dart';
+import 'package:handofmidas/models/TimeType.dart';
 import 'package:handofmidas/models/Wallet.dart';
 import 'package:handofmidas/redux/actions.dart';
 import 'package:handofmidas/screens/ListExchanges.dart';
@@ -39,7 +40,7 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
 
   TextEditingController _moneyController = new TextEditingController(text: "0");
 
-  _save(Wallet wallet) {
+  _save(Wallet wallet, TimeType timeType) {
     addExchange(wallet, _money, _note, _date, _dateCreate, _category)
         .then((res) {
       if (res.statusCode == 200) {
@@ -53,8 +54,10 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
         exchange["date"] = _date.millisecondsSinceEpoch;
         exchange["dateCreate"] = _dateCreate.millisecondsSinceEpoch;
         ExchangeProvider().insertExchange(exchange).then((e) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ListExchangesScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ListExchangesScreen(timeType)));
         });
       }
     });
@@ -86,7 +89,7 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
                             .copyWith(color: Colors.black)),
                     FlatButton(
                       onPressed: () {
-                        _save(state.wallet);
+                        _save(state.wallet, state.timeType);
                       },
                       child: Text(AppLocalizations.of(context).save,
                           style: Theme.of(context)
@@ -313,7 +316,7 @@ class _AddExchangeScreenState extends State<AddExchangeScreen> {
                         FlatButton(
                           onPressed: () {
                             DatePicker.showDateTimePicker(context,
-                                locale: LocaleType.en,
+                                locale: AppLocalizations.of(context).localType,
                                 showTitleActions: true, onConfirm: (date) {
                               this.setState(() {
                                 _date = date;

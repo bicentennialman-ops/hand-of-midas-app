@@ -14,6 +14,7 @@ import 'package:handofmidas/redux/actions.dart';
 import 'package:handofmidas/screens/AddWallet.dart';
 import 'package:handofmidas/screens/ListExchanges.dart';
 import 'package:handofmidas/services/user.dart' as userService;
+import 'package:handofmidas/utils/index.dart';
 
 class LoginScreen extends StatefulWidget {
   final String token;
@@ -45,12 +46,15 @@ class _LoginScreenState extends State<LoginScreen> {
             UserProvider().insertUser(user);
           }
         });
+
         if (state.wallet == null)
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => AddWalletScreen()));
         else
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ListExchangesScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ListExchangesScreen(state.timeType)));
       } else {
         showAlertDialog(context);
       }

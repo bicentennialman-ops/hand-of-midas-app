@@ -42,6 +42,7 @@ final int numberPage = 20;
 final double appBarHeigh = 50;
 final BorderRadius avatarBorderRadius =
     BorderRadius.all(Radius.circular(avatarSize));
+final BorderRadius dialogBorderRadius = BorderRadius.all(Radius.circular(5));
 final BorderRadius borderIcon = BorderRadius.all(Radius.circular(iconSize));
 
 final BorderRadius buttonBorderRadius = BorderRadius.all(Radius.circular(8));

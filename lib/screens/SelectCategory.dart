@@ -61,7 +61,10 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          BackButton(),
+                          new IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () => Navigator.of(context).pop(null),
+                          ),
                           Text(AppLocalizations.of(context).selectCategory,
                               style: Theme.of(context)
                                   .textTheme

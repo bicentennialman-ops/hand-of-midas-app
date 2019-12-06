@@ -43,7 +43,6 @@ class _ListExchangesPageState extends State<ListExchangesPageWidget>
               await CategoryProvider().getCategory(exchange.categoryId),
               [exchange]));
       }
-      ;
       this.setState(() {
         _groups = groups;
       });

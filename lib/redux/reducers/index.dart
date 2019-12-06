@@ -10,6 +10,8 @@ AppState reducer(AppState prevState, dynamic action) {
     newAppState.token = action.token;
   } else if (action is SelectWallet) {
     newAppState.wallet = action.wallet;
+  } else if (action is ChangeTimeType) {
+    newAppState.timeType = action.timeType;
   }
   return newAppState;
 }

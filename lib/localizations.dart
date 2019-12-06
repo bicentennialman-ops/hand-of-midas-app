@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'l10n/messages_all.dart';
@@ -40,6 +41,11 @@ class AppLocalizations {
       'bills-utilities': 'Bills & Utilities',
       'salary': 'Salary'
     },
+  };
+
+  static Map<String, LocaleType> _datePickerLocal = {
+    "vi": LocaleType.vi,
+    "en": LocaleType.en
   };
 
   static Map<String, Map<String, dynamic>> _currencyUnit = {
@@ -136,6 +142,7 @@ class AppLocalizations {
       Intl.message("Personal Wallet", name: "personalWallet");
   String get amount => Intl.message("Amount", name: "amount");
   String get note => Intl.message("Note", name: "note");
+  String get selectRange => Intl.message("Select range", name: "selectRange");
   String rangeDate(DateTime from, DateTime to) {
     DateFormat format = DateFormat(formatDateMonthYear);
     return '${format.format(from)} - ${format.format(to)}';
@@ -144,6 +151,15 @@ class AppLocalizations {
   String get debtLoan => Intl.message("Debt & Loan", name: "debtLoan");
   String get expense => Intl.message("Expense", name: "expense");
   String get income => Intl.message("Income", name: "income");
+  String get all => Intl.message("All", name: "all");
+  String get selectDay => Intl.message("Select day", name: "selectDay");
+  String get week => Intl.message("Week", name: "week");
+  String get year => Intl.message("Year", name: "year");
+  String get selectMonth => Intl.message("Select month", name: "month");
+  String get tomorrow => Intl.message("Tomorrow", name: "tomorrow");
+  String get nextMonth => Intl.message("Next month", name: "nextMonth");
+  String get nextWeek => Intl.message("Next week", name: "nextWeek");
+  String get nextYear => Intl.message("Next year", name: "nextYear");
 
   String month(DateTime time) {
     return DateFormat(formatMonthYear).format(time);
@@ -166,6 +182,10 @@ class AppLocalizations {
   walletNameDefault() => Intl.message('Cash', name: 'walletNameDefault');
   countExchanges(int count) =>
       Intl.message('$count exchanges', args: [count], name: 'countExchanges');
+
+  LocaleType get localType {
+    return _datePickerLocal[locale.languageCode];
+  }
 
   String money(double money, String code) {
     final currentUnit = _currencyUnit[code];
