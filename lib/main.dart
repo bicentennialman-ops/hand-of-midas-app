@@ -27,28 +27,40 @@ void main() async {
     _initialState = AppState(timeType, true, false, null, null);
   } else {
     String token = await storage.read(key: "token");
-    String newToken = await renewToken(token);
-
     TimeType timeType = TimeType(1, DateTime.now(), 10);
     setup("timeType", timeType.toMap());
-    //TimeType timeType = TimeType.fromMap(setting["timeType"]);
-    if (newToken == "")
-      _initialState = AppState(
-          timeType,
-          false,
-          false,
-          "",
-          setting["walletId"] != null
-              ? await WalletProvider()
-                  .getWallet(int.parse(setting["walletId"].toString()))
-              : null);
-    else {
-      await storage.write(key: "token", value: newToken);
+    try {
+      String newToken = await renewToken(token);
+
+      //TimeType timeType = TimeType.fromMap(setting["timeType"]);
+      if (newToken == "")
+        _initialState = AppState(
+            timeType,
+            false,
+            false,
+            "",
+            setting["walletId"] != null
+                ? await WalletProvider()
+                    .getWallet(int.parse(setting["walletId"].toString()))
+                : null);
+      else {
+        await storage.write(key: "token", value: newToken);
+        _initialState = AppState(
+            timeType,
+            false,
+            true,
+            newToken,
+            setting["walletId"] != null
+                ? await WalletProvider()
+                    .getWallet(int.parse(setting["walletId"].toString()))
+                : null);
+      }
+    } catch (err) {
       _initialState = AppState(
           timeType,
           false,
           true,
-          newToken,
+          token,
           setting["walletId"] != null
               ? await WalletProvider()
                   .getWallet(int.parse(setting["walletId"].toString()))
@@ -61,11 +73,17 @@ void main() async {
   runApp(MyApp(store: _store));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final Store<AppState> store;
-
   MyApp({this.store});
 
+  @override
+  _MyAppState createState() => _MyAppState(store);
+}
+
+class _MyAppState extends State<MyApp> {
+  _MyAppState(this.store);
+  final Store<AppState> store;
   @override
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
